@@ -168,8 +168,16 @@ substitute (Pattern (t:ts)) replacement =
 -- bound to the wildcard in the pattern list.
 match :: Eq a => Pattern a -> [a] -> Maybe [a]
 {- TO BE WRITTEN -}
-match = undefined
-
+match (Pattern []) [] = Just []
+match (Pattern []) _ = Nothing
+match (Pattern _) [] = Nothing
+match (Pattern (Item p : ps)) (x:xs)
+  | p == x = match (Pattern ps) xs
+  | otherwise = Nothing
+match (Pattern (Wildcard : ps)) (x : xs) = 
+    singleWildcardMatch (Pattern (Wildcard:ps)) (x:xs) 
+    `orElse` 
+    longerWildcardMatch (Pattern (Wildcard:ps)) (x:xs)
 -- Helper function to match
 singleWildcardMatch, longerWildcardMatch :: Eq a => Pattern a -> [a] -> Maybe [a]
 singleWildcardMatch (Pattern (Wildcard:ps)) (x:xs) =
