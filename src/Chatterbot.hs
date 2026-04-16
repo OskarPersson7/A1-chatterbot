@@ -61,7 +61,14 @@ rulesApply = undefined
 
 reflect :: Phrase -> Phrase
 {- TO BE WRITTEN -}
-reflect = undefined
+-- reflect ska appliceras på varje ord i en lista, därför behövs map
+reflect = map reflectWord
+  where
+    reflectWord word = case lookup word reflections of
+      Just replacementWord -> replacementWord
+      Nothing -> word
+
+
 
 reflections =
   [ ("am",     "are"),
