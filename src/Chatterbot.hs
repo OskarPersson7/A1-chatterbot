@@ -158,7 +158,11 @@ reductionsApply = undefined
 -- Replaces a wildcard in a template with the list given as the third argument
 substitute :: Eq a => Template a -> [a] -> [a]
 {- TO BE WRITTEN -}
-substitute = undefined
+substitute (Pattern []) _ = []
+substitute (Pattern (t:ts)) replacement = 
+  case t of 
+    Item x -> x : substitute (Pattern ts) replacement
+    Wildcard -> replacement ++ substitute (Pattern ts) replacement
 
 -- Tries to match two lists. If they match, the result consists of the sublist
 -- bound to the wildcard in the pattern list.
