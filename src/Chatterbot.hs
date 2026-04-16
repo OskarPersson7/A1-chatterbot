@@ -53,7 +53,7 @@ stateOfMind b =
 -- at random, and that's our bot
 makePair :: Rule -> IO (Pattern String, Template String)
 {- TO BE WRITTEN -}
-makePair = undefined
+makePair rule = undefined
 
 rulesApply :: [(Pattern String, Template String)] -> Phrase -> Phrase
 {- TO BE WRITTEN -}
@@ -109,7 +109,11 @@ ruleCompile = undefined
 -- mkPattern '*' "Hi *!" => [Item 'H', Item 'i', Wildcard, Item '!']
 mkPattern :: Eq a => a -> [a] -> Pattern a
 {- TO BE WRITTEN -}
-mkPattern = undefined
+mkPattern wc = Pattern . map convert
+                  where
+                    convert x
+                      | x == wc  = Wildcard
+                      | otherwise = Item x
 
 stringToPattern :: String -> String -> Pattern String
 stringToPattern wc = mkPattern wc . words
