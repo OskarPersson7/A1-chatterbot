@@ -180,7 +180,7 @@ match (Pattern (Item p : ps)) (x:xs)
   | otherwise = Nothing
 match (Pattern (Wildcard : ps)) (x : xs) = 
     singleWildcardMatch (Pattern (Wildcard:ps)) (x:xs) 
-    `orElse` 
+    `orElse`
     longerWildcardMatch (Pattern (Wildcard:ps)) (x:xs)
 -- Helper function to match
 singleWildcardMatch, longerWildcardMatch :: Eq a => Pattern a -> [a] -> Maybe [a]
@@ -189,7 +189,8 @@ singleWildcardMatch (Pattern (Wildcard:ps)) (x:xs) =
     Nothing -> Nothing
     Just _ -> Just [x]
 {- TO BE WRITTEN -}
-longerWildcardMatch = undefined
+longerWildcardMatch (Pattern (Wildcard:ps)) (x:xs) =
+  mmap (x:) (match (Pattern (Wildcard:ps)) xs)
 
 
 
