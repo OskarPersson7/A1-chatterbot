@@ -39,7 +39,10 @@ chatterbot botName botRules = do
       question <- getLine
       answer <- stateOfMind brain
       putStrLn (botName ++ ": " ++ (present . answer . prepare) question)
-      Control.Monad.when ((not . endOfDialog) question) botloop
+      unless (endOfDialog question) botloop
+
+unless :: Bool -> IO b -> IO b
+unless = unless
 
 
 --------------------------------------------------------
@@ -154,8 +157,7 @@ reduce = reductionsApply reductions
 
 reductionsApply :: [(Pattern String, Pattern String)] -> Phrase -> Phrase
 {- TO BE WRITTEN -}
-reductionsApply reductions phrase =
-  fix (try (transformationsApply id reductions)) phrase
+reductionsApply reductions = fix (try (transformationsApply id reductions))
 
 
 -------------------------------------------------------
@@ -203,7 +205,7 @@ longerWildcardMatch (Pattern (Wildcard:ps)) (x:xs) =
 
 -- Helper function: Matches a pattern and applies the transformation
 matchAndTransform :: Eq a => ([a] -> [a]) -> Pattern a -> [a] -> Maybe [a]
-matchAndTransform transform pat = (mmap transform) . (match pat)
+matchAndTransform transform pat = mmap transform . match pat
 
 -- Applying a single pattern
 transformationApply :: Eq a => ([a] -> [a]) -> [a] -> (Pattern a, Template a) -> Maybe [a]
