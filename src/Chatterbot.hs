@@ -107,7 +107,7 @@ rulesCompile = map ruleCompile
 ruleCompile :: (String, [String]) -> Rule
 {- TO BE WRITTEN -}
 ruleCompile (pattern, templates) = 
-  let inputPattern = starPattern pattern
+  let inputPattern = starPattern (map toLower pattern)
       responsePatterns = map starPattern templates
   in Rule (inputPattern, responsePatterns)
 
