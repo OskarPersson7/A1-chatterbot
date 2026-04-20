@@ -211,4 +211,6 @@ transformationApply f str (pat, tpl) =
 -- Applying a list of patterns until one succeeds
 transformationsApply :: Eq a => ([a] -> [a]) -> [(Pattern a, Template a)] -> [a] -> Maybe [a]
 {- TO BE WRITTEN -}
-transformationsApply = undefined
+transformationsApply _ [] _ = Nothing
+transformationsApply f (t:ts) str = 
+  transformationApply f str t `orElse` transformationsApply f ts str
