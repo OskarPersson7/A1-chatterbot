@@ -5,7 +5,7 @@ import Data.Char
 import Data.Maybe
 
 -- If you're not sure what this is, it's ok.
-import Control.Monad (mapM)
+import Control.Monad (mapM, when)
 import Data.Data (ConstrRep(FloatConstr))
 
 -- A pattern is a list of things
@@ -39,7 +39,7 @@ chatterbot botName botRules = do
       question <- getLine
       answer <- stateOfMind brain
       putStrLn (botName ++ ": " ++ (present . answer . prepare) question)
-      if (not . endOfDialog) question then botloop else return ()
+      Control.Monad.when ((not . endOfDialog) question) botloop
 
 
 --------------------------------------------------------
