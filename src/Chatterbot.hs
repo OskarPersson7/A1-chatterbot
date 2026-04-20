@@ -68,9 +68,7 @@ reflect :: Phrase -> Phrase
 -- reflect ska appliceras på varje ord i en lista, därför behövs map
 reflect = map reflectWord
   where
-    reflectWord word = case lookup word reflections of
-      Just replacementWord -> replacementWord
-      Nothing -> word
+    reflectWord word = fromMaybe word (lookup word reflections)
 
 
 
@@ -110,7 +108,7 @@ rulesCompile = map ruleCompile
 
 ruleCompile :: (String, [String]) -> Rule
 {- TO BE WRITTEN -}
-ruleCompile (pattern, templates) = 
+ruleCompile (pattern, templates) =
   let inputPattern = starPattern (map toLower pattern)
       responsePatterns = map starPattern templates
   in Rule (inputPattern, responsePatterns)
@@ -156,7 +154,7 @@ reduce = reductionsApply reductions
 
 reductionsApply :: [(Pattern String, Pattern String)] -> Phrase -> Phrase
 {- TO BE WRITTEN -}
-reductionsApply reductions phrase = 
+reductionsApply reductions phrase =
   fix (try (transformationsApply id reductions)) phrase
 
 
@@ -168,8 +166,8 @@ reductionsApply reductions phrase =
 substitute :: Eq a => Template a -> [a] -> [a]
 {- TO BE WRITTEN -}
 substitute (Pattern []) _ = []
-substitute (Pattern (t:ts)) replacement = 
-  case t of 
+substitute (Pattern (t:ts)) replacement =
+  case t of
     Item x -> x : substitute (Pattern ts) replacement
     Wildcard -> replacement ++ substitute (Pattern ts) replacement
 
@@ -183,8 +181,8 @@ match (Pattern _) [] = Nothing
 match (Pattern (Item p : ps)) (x:xs)
   | p == x = match (Pattern ps) xs
   | otherwise = Nothing
-match (Pattern (Wildcard : ps)) (x : xs) = 
-    singleWildcardMatch (Pattern (Wildcard:ps)) (x:xs) 
+match (Pattern (Wildcard : ps)) (x : xs) =
+    singleWildcardMatch (Pattern (Wildcard:ps)) (x:xs)
     `orElse`
     longerWildcardMatch (Pattern (Wildcard:ps)) (x:xs)
 -- Helper function to match
@@ -217,5 +215,5 @@ transformationApply f str (pat, tpl) =
 transformationsApply :: Eq a => ([a] -> [a]) -> [(Pattern a, Template a)] -> [a] -> Maybe [a]
 {- TO BE WRITTEN -}
 transformationsApply _ [] _ = Nothing
-transformationsApply f (t:ts) str = 
+transformationsApply f (t:ts) str =
   transformationApply f str t `orElse` transformationsApply f ts str
