@@ -205,7 +205,8 @@ matchAndTransform transform pat = (mmap transform) . (match pat)
 -- Applying a single pattern
 transformationApply :: Eq a => ([a] -> [a]) -> [a] -> (Pattern a, Template a) -> Maybe [a]
 {- TO BE WRITTEN -}
-transformationApply = undefined
+transformationApply f str (pat, tpl) =
+  mmap (substitute tpl) (matchAndTransform f pat str)
 
 -- Applying a list of patterns until one succeeds
 transformationsApply :: Eq a => ([a] -> [a]) -> [(Pattern a, Template a)] -> [a] -> Maybe [a]
