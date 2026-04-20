@@ -6,6 +6,7 @@ import Data.Maybe
 
 -- If you're not sure what this is, it's ok.
 import Control.Monad (mapM)
+import Data.Data (ConstrRep(FloatConstr))
 
 -- A pattern is a list of things
 -- Where we have either a value or a wildcard
@@ -53,7 +54,10 @@ stateOfMind b =
 -- at random, and that's our bot
 makePair :: Rule -> IO (Pattern String, Template String)
 {- TO BE WRITTEN -}
-makePair rule = undefined
+makePair (Rule (pat, tpls)) = do
+  r <- randomIO :: IO Float
+  let selectedTemplate = pick r tpls
+  return (pat, selectedTemplate)
 
 rulesApply :: [(Pattern String, Template String)] -> Phrase -> Phrase
 {- TO BE WRITTEN -}
