@@ -1,3 +1,5 @@
+-- By Noah Heneen and Oskar Persson
+
 module Chatterbot where
 import Utilities
 import System.Random
