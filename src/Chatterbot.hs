@@ -57,7 +57,7 @@ makePair rule = undefined
 
 rulesApply :: [(Pattern String, Template String)] -> Phrase -> Phrase
 {- TO BE WRITTEN -}
-rulesApply = undefined
+rulesApply rules phrase =  fromMaybe phrase (transformationsApply reflect rules phrase)
 
 reflect :: Phrase -> Phrase
 {- TO BE WRITTEN -}
