@@ -156,7 +156,8 @@ reduce = reductionsApply reductions
 
 reductionsApply :: [(Pattern String, Pattern String)] -> Phrase -> Phrase
 {- TO BE WRITTEN -}
-reductionsApply = undefined
+reductionsApply reductions phrase = 
+  fix (try (transformationsApply id reductions)) phrase
 
 
 -------------------------------------------------------
